@@ -1,0 +1,39 @@
+.App-header {
+   display: flex;
+   flex-direction: row;
+   height: 4rem;
+   padding-top: 1rem;
+   background-color: #282c34;
+   align-items: flex-end;
+   justify-content: center;
+   font-size: calc(10px + 2vmin);
+   color: white;
+}
+
+.App-header a {
+   text-decoration: none;
+   color: white;
+}
+
+.App-header .nav-link {
+   padding: 0 1rem 0.5rem;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: flex-end;
+   text-decoration: none;
+   color: white;
+   font-size: 1.25rem;
+}
+
+.nav-link.active {
+   color: #61dafb;
+   border-bottom: 4px solid #61dafb;
+   font-weight: bold;
+}
+
+.App-header h1 {
+   margin: 0 2rem;
+   padding: 0.25rem 0;
+}
