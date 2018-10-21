@@ -11,6 +11,9 @@ export default class Edge {
       this.startVertex = startVertex;
       this.endVertex = endVertex;
       this.weight = weight;
+
+      startVertex.addEdge(this);
+      endVertex.addEdge(this);
    }
 
    /**

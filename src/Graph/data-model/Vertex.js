@@ -7,7 +7,7 @@ export default class Vertex {
     * @param {number} x - The Vertex's x-coordinate
     * @param {number} y - The Vertex's y-coordinate
     */
-   constructor(label, x, y) {
+   constructor(label, x = 0, y = 0) {
       this.label = label;
       this.x = x;
       this.y = y;
@@ -28,14 +28,14 @@ export default class Vertex {
          edge.startVertex.label === this.label
             ? edge.endVertex
             : edge.startVertex;
-      this.neighbhors.add(newNeighbor);
+      this.neighbors.add(newNeighbor);
    }
 
    /**
     * Removes an edge from the Vertex
     * @param {Edge} edge
     */
-   removeEdge(edge) {
+   deleteEdge(edge) {
       this.edges.delete(edge);
    }
 }
