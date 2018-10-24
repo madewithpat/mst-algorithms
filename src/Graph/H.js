@@ -29,6 +29,11 @@ export default {
          label: "F",
          x: 140,
          y: 365
+      },
+      {
+         label: "G",
+         x: 350,
+         y: 60
       }
    ],
 
@@ -68,6 +73,14 @@ export default {
       {
          endpoints: ["E", "F"],
          weight: 5
+      },
+      {
+         endpoints: ["A", "G"],
+         weight: 3
+      },
+      {
+         endpoints: ["G", "C"],
+         weight: 7
       }
    ]
 };
