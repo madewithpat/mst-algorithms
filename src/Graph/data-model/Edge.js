@@ -1,28 +1,33 @@
-/**
- * An Edge in a simple, undirected graph
- */
-export default class Edge {
+export class Edge {
    /**
-    * @param {Vertex} startVertex - The first endpoint of the Edge
-    * @param {Vertex} endVertex - The second endpoint of the Edge
-    * @param {number} [weight=1] - The Edge's weight, default is 1
+    * @param {GraphVertex} startVertex
+    * @param {GraphVertex} endVertex
+    * @param {number} [weight=1]
     */
-   constructor(startVertex, endVertex, weight = 1) {
+   constructor(startVertex, endVertex, weight = 0) {
       this.startVertex = startVertex;
       this.endVertex = endVertex;
       this.weight = weight;
-
-      startVertex.addEdge(this);
-      endVertex.addEdge(this);
    }
 
    /**
     * @return {string}
     */
-   get label() {
-      const startLabel = this.startVertex.label;
-      const endLabel = this.endVertex.label;
+   get key() {
+      const startVertexKey = this.startVertex.key;
+      const endVertexKey = this.endVertex.key;
 
-      return `${startLabel}-${endLabel}`;
+      return `${startVertexKey}_${endVertexKey}`;
+   }
+
+   /**
+    * @return {Edge}
+    */
+   reverse() {
+      const tmp = this.startVertex;
+      this.startVertex = this.endVertex;
+      this.endVertex = tmp;
+
+      return this;
    }
 }

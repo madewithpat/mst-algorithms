@@ -1,118 +1,162 @@
-/**
- * A simple, undirected graph
- */
-export default class Graph {
-   constructor(V = new Map(), E = new Map()) {
-      /*
-            Need checks for...
-            - if |V| == 0 and |E| > 0, throw error
-            - if |E| > (|V| * |V| - 1 ? 2), throw error
-      */
-
-      this.V = V;
-      this.E = E;
+export class Graph {
+   /**
+    * @param {boolean} isDirected
+    */
+   constructor() {
+      this.vertices = new Map();
+      this.edges = new Map();
    }
 
    /**
-    *
-    * @param {Vertex} vertex - The Vertex to be added
-    * @returns {Graph}
+    * @property {number} weight - Sum of all edge weights in this graph
     */
-   addVertex = vertex => {
-      if (this.V.has(vertex.label)) {
-         throw new Error(`Vertex ${vertex.label} already exists in this graph`);
-      } else {
-         this.V.set(vertex.label, vertex);
-
-         let sortedVertices = new Map(Array.from(this.V).sort());
-         this.V = sortedVertices;
-      }
-      return this;
-   };
-
-   /**
-    * Removes the specified Vertex from the graph, along with all of its Edges
-    * @param {Vertex} vertex - The Vertex to be deleted
-    * @returns {Graph}
-    */
-   deleteVertex = vertex => {
-      if (this.V.has(vertex.label)) {
-         for (let edge of vertex.edges) {
-            const neighbhor =
-               edge.startVertex.label == vertex.label
-                  ? edge.endVertex
-                  : edge.startVertex;
-            neighbhor.deleteEdge(edge);
-
-            this.deleteEdge(edge);
-         }
-
-         this.V.delete(vertex.label);
-      }
-   };
-
-   /**
-    * Adds an Edge to the Graph's edge set, E
-    * @param {Edge} edge - The Edge to be added
-    * @returns {Graph}
-    */
-   addEdge = edge => {
-      let startVertex = edge.startVertex;
-      let endVertex = edge.endVertex;
-
-      if (!this.V.has(startVertex.label)) {
-         this.addVertex(startVertex);
-      }
-
-      if (!this.V.has(endVertex.label)) {
-         this.addVertex(endVertex);
-      }
-
-      if (this.E.has(edge.label)) {
-         throw new Error(`Edge ${edge.label} already exists in this graph`);
-      } else {
-         this.E.set(edge.label, edge);
-         startVertex.addEdge(edge);
-         endVertex.addEdge(edge);
-      }
-
-      return this;
-   };
-
-   /**
-    * Removes the specified Edge from the Graph
-    * @param {Edge} edge - The edge to be deleted
-    * @returns {Graph}
-    */
-   deleteEdge = edge => {
-      if (this.E.has(edge.label)) {
-         const startVertex = edge.startVertex;
-         const endVertex = edge.endVertex;
-
-         startVertex.deleteEdge(edge);
-         endVertex.deleteEdge(edge);
-
-         this.E.delete(edge.label);
-      } else {
-         throw new Error(`Edge ${edge.label} does not exist in this graph`);
-      }
-
-      return this;
-   };
-
-   get order() {
-      return Array.from(this.V).length;
-   }
-
-   get size() {
-      return Array.from(this.E).length;
-   }
-
    get weight() {
-      let weight = Array.from(this.E).reduce((weight, edgeTuple) => {
-         return weight + edgeTuple[1].weight;
+      return this.getAllEdges().reduce((weight, graphEdge) => {
+         return weight + graphEdge.weight;
       }, 0);
+   }
 
-      return weight;
+   /**
+    * @property {number} order - The number of vertices in this graph
+    */
+   get order() {
+      return this.vertices.size;
+   }
+
+   /**
+    * @property {number} size - The number of edges in this graph
+    */
+   get size() {
+      return this.edges.size;
+   }
+
+   /**
+    * @param {GraphVertex} newVertex
+    * @returns {Graph}
+    */
+   addVertex(newVertex) {
+      if (!this.vertices.has(newVertex.key)) {
+         this.vertices.set(newVertex.key, newVertex);
+      }
+
+      return this;
+   }
+
+   /**
+    * @param {string} vertexKey
+    * @returns {GraphVertex|undefined}
+    */
+   getVertexByKey(vertexKey) {
+      if (this.vertices.has(vertexKey)) {
+         return this.vertices.get(vertexKey);
+      }
+   }
+
+   /**
+    * @param {GraphVertex} vertex
+    * @returns {GraphVertex[]}
+    */
+   getNeighbors(vertex) {
+      return vertex.neighbors;
+   }
+
+   /**
+    * @return {GraphVertex[]}
+    */
+   getAllVertices() {
+      return Array.from(this.vertices.values());
+   }
+
+   /**
+    * @return {GraphEdge[]}
+    */
+   getAllEdges() {
+      return Array.from(this.edges.values());
+   }
+
+   /**
+    * @param {GraphEdge} edge
+    * @returns {Graph}
+    */
+   addEdge(edge) {
+      // Try to find and end start vertices.
+      let startVertex = this.getVertexByKey(edge.startVertex.key);
+      let endVertex = this.getVertexByKey(edge.endVertex.key);
+
+      // Insert start vertex if it wasn't inserted.
+      if (!startVertex) {
+         this.addVertex(edge.startVertex);
+         startVertex = this.getVertexByKey(edge.startVertex.key);
+      }
+
+      // Insert end vertex if it wasn't inserted.
+      if (!endVertex) {
+         this.addVertex(edge.endVertex);
+         endVertex = this.getVertexByKey(edge.endVertex.key);
+      }
+
+      // Check if edge has been already added.
+      if (this.edges.has(edge.key)) {
+         throw new Error("Edge has already been added before");
+      } else {
+         this.edges.set(edge.key, edge);
+      }
+
+      // Add edge to the vertices.
+      startVertex.addEdge(edge);
+      endVertex.addEdge(edge);
+
+      return this;
+   }
+
+   /**
+    * @param {GraphEdge} edge
+    */
+   deleteEdge(edge) {
+      // Delete edge from the list of edges.
+      if (this.edges.has(edge.key)) {
+         this.edges.delete(edge.key);
+      } else {
+         throw new Error("Edge not found in graph");
+      }
+
+      // Try to find and end start vertices and delete edge from them.
+      const startVertex = this.getVertexByKey(edge.startVertex.key);
+      const endVertex = this.getVertexByKey(edge.endVertex.key);
+
+      startVertex.deleteEdge(edge);
+      endVertex.deleteEdge(edge);
+   }
+
+   /**
+    * @param {GraphVertex} startVertex
+    * @param {GraphVertex} endVertex
+    * @return {(GraphEdge|undefined)}
+    */
+   findEdge(startVertex, endVertex) {
+      const vertex = this.getVertexByKey(startVertex.key);
+
+      if (!vertex) {
+         return undefined;
+      }
+
+      return vertex.findEdge(endVertex);
+   }
+
+   /**
+    * @param {string} vertexKey
+    * @returns {GraphVertex}
+    */
+   findVertexByKey(vertexKey) {
+      if (this.vertices.has(vertexKey)) {
+         return this.vertices.get(vertexKey);
+      }
+   }
+
+   /**
+    * @return {string[]}
+    */
+   getVerticesKeys() {
+      return Array.from(this.vertices.keys());
    }
 }

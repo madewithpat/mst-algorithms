@@ -1,29 +1,40 @@
-import Edge from "../Edge";
-import Vertex from "../Vertex";
+import { Edge, Vertex } from "../index";
 
-describe("Edge", () => {
-   it("should create an edge with default weight", () => {
-      const A = new Vertex("A");
-      const B = new Vertex("B");
+describe("GraphEdge", () => {
+   it("should create graph edge with default weight", () => {
+      const startVertex = new Vertex("A");
+      const endVertex = new Vertex("B");
+      const edge = new Edge(startVertex, endVertex);
 
-      const AB = new Edge(A, B);
-
-      expect.assertions(4);
-      expect(AB.weight).toBe(1);
-      expect(AB.label).toBe("A-B");
-      expect(AB.startVertex).toEqual(A);
-      expect(AB.endVertex).toEqual(B);
+      expect(edge.key).toBe("A_B");
+      expect(edge.startVertex).toEqual(startVertex);
+      expect(edge.endVertex).toEqual(endVertex);
+      expect(edge.weight).toEqual(0);
    });
 
-   // No it shouldn't, this behavior belongs on the Vertex
-   it("should add itself to both vertices", () => {
-      const A = new Vertex("A");
-      const B = new Vertex("B");
-      const AB = new Edge(A, B);
+   it("should create graph edge with predefined weight", () => {
+      const startVertex = new Vertex("A");
+      const endVertex = new Vertex("B");
+      const edge = new Edge(startVertex, endVertex, 10);
 
-      expect(A.neighbors.has(B)).toBe(true);
-      expect(A.edges.has(AB)).toBe(true);
-      expect(B.neighbors.has(A)).toBe(true);
-      expect(B.edges.has(AB)).toBe(true);
+      expect(edge.startVertex).toEqual(startVertex);
+      expect(edge.endVertex).toEqual(endVertex);
+      expect(edge.weight).toEqual(10);
+   });
+
+   it("should be possible to do edge reverse", () => {
+      const vertexA = new Vertex("A");
+      const vertexB = new Vertex("B");
+      const edge = new Edge(vertexA, vertexB, 10);
+
+      expect(edge.startVertex).toEqual(vertexA);
+      expect(edge.endVertex).toEqual(vertexB);
+      expect(edge.weight).toEqual(10);
+
+      edge.reverse();
+
+      expect(edge.startVertex).toEqual(vertexB);
+      expect(edge.endVertex).toEqual(vertexA);
+      expect(edge.weight).toEqual(10);
    });
 });
