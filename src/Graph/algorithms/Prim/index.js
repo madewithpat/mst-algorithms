@@ -1,10 +1,10 @@
-import { Graph } from "../Graph/data-model";
+import { Graph } from "../../data-model";
 
 /**
  * @param {Graph} graph
  * @return {Graph}
  */
-export default function prim(graph, seed) {
+export function prim(graph, seed) {
    // Init new graph that will contain minimum spanning tree of original graph.
    const minimumSpanningTree = new Graph();
 

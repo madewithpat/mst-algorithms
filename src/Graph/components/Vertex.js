@@ -1,6 +1,6 @@
 import React from "react";
 
-const Vertex = ({ x, y, label, selected = false }) => {
+export const Vertex = ({ x, y, label, selected = false }) => {
    return (
       <g>
          <circle
@@ -17,5 +17,3 @@ const Vertex = ({ x, y, label, selected = false }) => {
       </g>
    );
 };
-
-export default Vertex;

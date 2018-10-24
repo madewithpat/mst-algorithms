@@ -5,7 +5,7 @@ export class Vertex {
     * @param {number} y
     */
    constructor(key, x = 0, y = 0) {
-      if (key == undefined) {
+      if (key === undefined) {
          throw new Error("Vertex must have a key");
       }
       this.key = key;
@@ -20,7 +20,7 @@ export class Vertex {
 
    get neighbors() {
       const neighbors = this.edges
-         .map(e => (e.startVertex == this ? e.endVertex : e.startVertex))
+         .map(e => (e.startVertex === this ? e.endVertex : e.startVertex))
          .sort((a, b) => {
             if (a.key.toLowerCase() < b.key.toLowerCase()) {
                return -1;
@@ -32,7 +32,7 @@ export class Vertex {
             return 0;
          });
 
-      return neighbors.filter((v, i, a) => v != a[i - 1]);
+      return neighbors.filter((v, i, a) => v !== a[i - 1]);
    }
 
    /**
@@ -58,7 +58,7 @@ export class Vertex {
     * @param {GraphEdge} edge
     */
    deleteEdge(edge) {
-      this.edges = this.edges.filter(e => e != edge);
+      this.edges = this.edges.filter(e => e !== edge);
    }
 
    /**
@@ -92,7 +92,7 @@ export class Vertex {
     */
    findEdge(vertex) {
       return this.edges.find(
-         e => e.startVertex == vertex || e.endVertex == vertex
+         e => e.startVertex === vertex || e.endVertex === vertex
       );
    }
 }

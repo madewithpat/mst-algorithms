@@ -1,6 +1,6 @@
 import React from "react";
 
-const Edge = ({ selected = false, weight = 1, x1, x2, y1, y2 }) => {
+export const Edge = ({ selected = false, weight = 1, x1, x2, y1, y2 }) => {
    let slope;
    if (x1 < x2) {
       slope = (y2 - y1) / (x2 - x1);
@@ -28,5 +28,4 @@ const Edge = ({ selected = false, weight = 1, x1, x2, y1, y2 }) => {
       </g>
    );
 };
-
 export default Edge;

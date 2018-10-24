@@ -1,10 +1,10 @@
-import { Graph } from "../Graph/data-model";
+import { Graph } from "../../data-model";
 
 /**
  * @param {Graph} graph
  * @return {Graph}
  */
-export default function kruskal(graph) {
+export function kruskal(graph) {
    // Init new graph that will contain minimum spanning tree of original graph.
    const minimumSpanningTree = new Graph();
    graph

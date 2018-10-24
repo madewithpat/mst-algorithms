@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./graph.css";
 
-class Graph extends Component {
+export class Graph extends Component {
    render() {
       return (
          <svg
@@ -16,4 +16,7 @@ class Graph extends Component {
    }
 }
 
-export default Graph;
+export { Vertex } from "./components/Vertex.js";
+export { Edge } from "./components/Edge";
+
+export * from "./data-model";
