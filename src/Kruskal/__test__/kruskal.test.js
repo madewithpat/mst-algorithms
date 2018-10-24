@@ -1,9 +1,8 @@
-import { Graph, Edge, Vertex } from "../../Graph/data-model";
+import { Vertex, Edge, Graph } from "../../Graph/data-model";
 import example from "../../Graph/example";
+import kruskal from "../kruskal";
 
-import prim from "../prim";
-
-describe("prim", () => {
+describe("kruskal", () => {
    it("should find a simple minimum spanning tree", () => {
       const vertexA = new Vertex("A");
       const vertexB = new Vertex("B");
@@ -27,7 +26,7 @@ describe("prim", () => {
 
       expect(graph.weight).toEqual(9);
 
-      const minimumSpanningTree = prim(graph);
+      const minimumSpanningTree = kruskal(graph);
 
       expect(minimumSpanningTree.weight).toBe(3);
       expect(minimumSpanningTree.order).toBe(graph.order);
@@ -67,9 +66,10 @@ describe("prim", () => {
          .addEdge(edgeEF)
          .addEdge(edgeFC)
          .addEdge(edgeFG);
+
       expect(graph.weight).toEqual(46);
 
-      const minimumSpanningTree = prim(graph);
+      const minimumSpanningTree = kruskal(graph);
 
       expect(minimumSpanningTree.weight).toBe(24);
       expect(minimumSpanningTree.order).toBe(graph.order);
@@ -88,8 +88,7 @@ describe("prim", () => {
          let edge = new Edge(startVertex, endVertex, e.weight);
          G.addEdge(edge);
       });
-      const seed = G.getVertexByKey("A");
-      const mstOfG = prim(G, seed);
+      const mstOfG = kruskal(G);
       expect.assertions(4);
       expect(G).not.toBe(mstOfG);
       expect(mstOfG.order).toBe(G.order);
